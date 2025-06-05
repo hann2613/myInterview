@@ -1,14 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Redirecting...</title>
-    <script>
-      sessionStorage.redirect = location.pathname;
-      location.replace("/myInterview/");
-    </script>
+    <meta charset="UTF-8" />
+    <title>Interview Practice</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    Redirecting to <a href="/myInterview/">main page</a>...
+    <div id="app">
+      <h1>Interview Practice</h1>
+
+      <nav>
+        <button @click="currentPage = 'intro'">Introduction</button>
+        <button @click="currentPage = 'projects'">Projects</button>
+        <button @click="currentPage = 'questions'">Expected Questions</button>
+      </nav>
+
+      <!-- Introduction Page -->
+      <section v-if="currentPage === 'intro'">
+        <h2>Introduction</h2>
+        <ul>
+          <li><strong>Education:</strong> {{ intro.education }}</li>
+          <li><strong>Work:</strong> {{ intro.work }}</li>
+          <li><strong>Skills:</strong> {{ intro.skills }}</li>
+          <li><strong>Certifications:</strong> {{ intro.certifications }}</li>
+        </ul>
+
+        <h3>Full Self-Introduction</h3>
+        <div v-if="!editingIntroText">
+          <p>{{ intro.fullText }}</p>
+          <button @click="editingIntroText = true">Edit Full Text</button>
+        </div>
+        <div v-else>
+          <textarea
+            v-model="introDraft.fullText"
+            rows="6"
+            placeholder="Write your full self-introduction here..."
+          ></textarea>
+          <br />
+          <button @click="saveIntro">Save</button>
+          <button @click="cancelIntroEdit">Cancel</button>
+        </div>
+
+        <button @click="editingIntro = !editingIntro">
+          {{ editingIntro ? 'Cancel' : 'Edit' }}
+        </button>
+
+        <div v-if="editingIntro">
+          <textarea
+            v-model="introDraft.education"
+            placeholder="Education"
+          ></textarea>
+          <textarea v-model="introDraft.work" placeholder="Work"></textarea>
+          <textarea v-model="introDraft.skills" placeholder="Skills"></textarea>
+          <textarea
+            v-model="introDraft.certifications"
+            placeholder="Certifications"
+          ></textarea>
+          <button @click="saveIntro">Save</button>
+        </div>
+      </section>
+
+      <!-- Projects Page -->
+      <section v-if="currentPage === 'projects'">
+        <h2>Projects</h2>
+
+        <div
+          v-for="(project, index) in projects"
+          :key="index"
+          class="project-block"
+        >
+          <div v-if="editProjectIndex !== index">
+            <h3>{{ project.name }}</h3>
+            <ul>
+              <li v-for="(point, i) in project.keyPoints" :key="i">
+                {{ point }}
+              </li>
+            </ul>
+            <p>{{ project.description }}</p>
+            <button @click="startEditingProject(index)">Edit</button>
+            <button @click="deleteProject(index)">Delete</button>
+          </div>
+
+          <div v-else>
+            <label>Name:</label>
+            <input v-model="projectDraft.name" />
+            <label>Key Points:</label>
+            <div v-for="(point, i) in projectDraft.keyPoints" :key="i">
+              <input v-model="projectDraft.keyPoints[i]" />
+            </div>
+            <button @click="addKeyPoint">+ Add Key Point</button>
+
+            <label>Description:</label>
+            <textarea v-model="projectDraft.description"></textarea>
+
+            <button @click="saveProject(index)">Save</button>
+            <button @click="cancelEditProject">Cancel</button>
+          </div>
+        </div>
+
+        <hr />
+        <h3>Add New Project</h3>
+        <input v-model="newProject.name" placeholder="Project Name" />
+        <div v-for="(point, i) in newProject.keyPoints" :key="i">
+          <input v-model="newProject.keyPoints[i]" placeholder="Key Point" />
+        </div>
+        <button @click="addNewKeyPoint">+ Add Key Point</button>
+        <textarea
+          v-model="newProject.description"
+          placeholder="Description"
+        ></textarea>
+        <button @click="addProject" :disabled="!newProject.name.trim()">
+          Add Project
+        </button>
+      </section>
+
+      <!-- Questions Page -->
+      <section v-if="currentPage === 'questions'">
+        <h2>Expected Questions</h2>
+
+        <div v-for="(card, index) in flashcards" :key="index" class="card">
+          <!-- non-edit -->
+          <div v-if="editIndex !== index">
+            <p><strong>Q: {{ card.question }}</strong></p>
+            <p v-if="card.showAnswer">A: {{ card.answer }}</p>
+            <button @click="toggleAnswer(index)">
+              {{ card.showAnswer ? 'Hide' : 'Show' }} Answer
+            </button>
+            <button @click="startEdit(index)">Edit</button>
+            <button @click="deleteCard(index)">Delete</button>
+          </div>
+
+          <!-- Edit -->
+          <div v-else>
+            <label>Question:</label>
+            <input v-model="editQuestion" />
+            <label>Answer:</label>
+            <textarea v-model="editAnswer"></textarea>
+            <button @click="saveEdit(index)">Save</button>
+            <button @click="cancelEdit">Cancel</button>
+          </div>
+        </div>
+
+        <hr />
+        <h3>Add New Question</h3>
+        <input v-model="newQuestion" placeholder="Enter question" />
+        <textarea v-model="newAnswer" placeholder="Enter answer"></textarea>
+        <button @click="addCard" :disabled="!newQuestion.trim()">Add</button>
+      </section>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>

@@ -212,3 +212,51 @@ li {
 .mb-2 {
   margin-bottom: calc(var(--spacing-unit) * 2);
 }
+
+/* ===== Responsive Typography for Mobile ===== */
+body {
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 1.1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  input,
+  textarea,
+  button {
+    font-size: 1rem;
+  }
+
+  nav button {
+    font-size: 1rem;
+  }
+
+  .card,
+  .project-block {
+    font-size: 1rem;
+  }
+}
+
+:root {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    font-size: 18px;
+  }
+}
