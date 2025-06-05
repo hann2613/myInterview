@@ -1,0 +1,11 @@
+{
+  "name": "myinterview",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "gh-pages -d .",
+    "predeploy": "copy index.html 404.html"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.1.0"
+  }
+}
