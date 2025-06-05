@@ -1,15 +1,56 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>Jinghan's Interview Practice Place</title>
-        <body>
-            <h1>Jinghan's Interview Practice Place</h1>
-            <li>Introduction
-                <ul>
+<html lang="EN">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jinghan's Practice Space</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <nav>
+      <a :class="{active: currentPage === 'intro'}" @click="currentPage = 'intro'">Introduction</a>
+      <a :class="{active: currentPage === 'flashcards'}" @click="currentPage = 'flashcards'">121</a>
+    </nav>
 
-                </ul>
-            </li>
-        </body>
-    </head>
+    <div v-if="currentPage === 'intro'">
+      <h2>Introduction</h2>
+      <p>qqq</p>
+    </div>
+
+    <div v-if="currentPage === 'flashcards'">
+      <h2>22222222222222</h2>
+
+      <div v-for="(card, index) in flashcards" :key="index" class="card">
+        <div v-if="editIndex !== index">
+          <strong>Q: {{ card.question }}</strong>
+          <p>A: {{ card.answer }}</p>
+          <button @click="editIndex = index">Edit</button>
+          <button @click="deleteCard(index)">Delete</button>
+        </div>
+
+        <div v-else>
+          <label>Question：</label>
+          <input v-model="editQuestion" />
+          <label>Answer：</label>
+          <textarea v-model="editAnswer"></textarea>
+          <button @click="saveEdit(index)">Save</button>
+          <button @click="cancelEdit">Cancel</button>
+        </div>
+      </div>
+
+      <hr />
+
+      <h3>Add</h3>
+      <label>Question：</label>
+      <input v-model="newQuestion" placeholder="Enter" />
+      <label>Answer：</label>
+      <textarea v-model="newAnswer" placeholder="Enter"></textarea>
+      <button @click="addCard" :disabled="!newQuestion.trim()">Add more</button>
+    </div>
+  </div>
+
+  <!-- Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="app.js"></script>
+</body>
 </html>
