@@ -25,16 +25,7 @@ createApp({
 
       // Questions
       flashcards: [
-        {
-          question: "Why do you choose our company?",
-          answer: "Because...",
-          showAnswer: false,
-        },
-        {
-          question: "What is your plan?",
-          answer: "My plan is...",
-          showAnswer: false,
-        },
+        
       ],
       newQuestion: "",
       newAnswer: "",
@@ -44,11 +35,7 @@ createApp({
 
       // Projects
       projects: [
-        {
-          name: "Portfolio Website",
-          keyPoints: ["Vue 3", "Deployed on Netlify"],
-          description: "A personal portfolio to showcase my work.",
-        },
+       
       ],
       newProject: {
         name: "",
